@@ -1,7 +1,0 @@
-{
-  "navigationBarTitleText": "推荐开源项目",
-  "enablePullDownRefresh": false,
-  "usingComponents": {
-    "u-parse": "/node-modules/uview-ui/components/u-parse/u-parse"
-  }
-}

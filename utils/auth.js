@@ -18,7 +18,7 @@ export function setToken(value) {
  */
 export function getToken() {
 	let token = uni.getStorageSync('token');
-	console.log("token", token);
+	// console.log("token", token);
 	// if (!token) {
 	// 	// uni.showToast({
 	// 	// 	title: "请先登录",
@@ -50,10 +50,41 @@ export function getToken() {
 export function removeToken() {
 	uni.removeStorageSync('token');
 }
+// 用户第二次登录通过isFirst判断
+export function setIsfirst(value){
+	uni.setStorageSync('isfirst',value);
+}
+// 获取缓存的isfirst
+export function getIsfirst(){
+	let isfirst=uni.getStorageSync('isfirst');
+	return isfirst;
+}
+// 移除isfirst
+export function removeIsfirst(){
+	uni.removeStorageSync('isfirst');
+}
 /**
  * 操作用户信息
  * 缓存微信用户信息
  */
+// 二次登录的用户信息
+export function setloginuserInfo(value){
+	try{
+		let loginuserValue=JSON.stringify(value);
+		uni.setStorageSync('loginuserinfo',loginuserValue);
+	}catch(e){
+		return;
+	}
+}
+export function getloginuserInfo(value){
+	let loginuserinfo=uni.getStorageSync('loginuserinfo');
+	if(loginuserinfo){
+		return JSON.parse(loginuserinfo);
+	}
+}
+export function removeloginuserInfo(){
+	uni.removeStorageSync('loginuserinfo');
+}
 export function setUserInfo(value) {
 	try {
 		//const user={name:"张三"，age:25}

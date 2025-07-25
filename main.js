@@ -8,10 +8,10 @@ import Vue from 'vue'
 import uView from 'uview-ui';
 Vue.use(uView);
 Vue.prototype.request = request.request //挂载到全局
-let imgurl = 'http://10.142.150.3:8083'
-// let imgurldev = 'http://10.142.150.3:8083'
+let imgurl = 'https://xhzl.sxhcyywl.com:1443/prod-api'
+// let imgurldev = 'http://10.142.150.3:8099'
 // let imgurl = 'https://ga.rasmall.cn/prod-api'
-Vue.prototype.myimgurl = function () {  
+Vue.prototype.myimgurl = function () {
   return imgurl;
 };
 Vue.config.productionTip = false
@@ -59,6 +59,14 @@ function mes(str){
 		title:str,
 		icon:'none'
 	})
+}
+//方案一
+// if(uni.getSystemInfoSync().platform!=="devtools"){
+// 	console.log=()=>{}
+// }
+//方案二
+if (process.env.NODE_ENV !== 'development') {
+  console.log = () => {}  // 非开发环境禁用日志
 }
 Vue.prototype.jump = jump;
 Vue.prototype.myad = myad;

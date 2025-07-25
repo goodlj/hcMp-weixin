@@ -1,19 +1,33 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/login/login",
+    "pages/guide/guide",
+    "pages/addCompany/addCompany",
+    "pages/index/programs/programsDetail",
     "pages/find/find",
     "pages/me/me",
     "pages/me/mynotice/mynotice",
-    "pages/itemlist/itemlist",
-    "pages/projectlist/projectlist",
-    "pages/me/userinfo"
+    "pages/me/about/about",
+    "pages/me/feedback/feedback",
+    "pages/me/evaluate/evaluate",
+    "pages/me/storeManage/storeManage",
+    "pages/me/storeManage/addStore/addStore",
+    "pages/login/agreement"
   ],
   "subPackages": [
     {
       "root": "pageA",
       "pages": [
-        "route/route",
-        "deliveryOrder/deliveryOrder"
+        "codequery/codequery",
+        "industryTrends/industryTrends",
+        "deliveryOrder/deliveryOrder",
+        "deliveryOrder/orderSearch/orderSearch",
+        "deliveryOrder/orderDetail/orderPreview",
+        "deliveryOrder/orderDetail/orderUnbound",
+        "deliveryOrder/orderLogistics/orderLogistics",
+        "deliveryOrder/supervisionCode/supervisionCode",
+        "deliveryOrder/orderDetail/qualityDown"
       ]
     }
   ],
@@ -36,12 +50,6 @@
         "text": "首页"
       },
       {
-        "pagePath": "pages/find/find",
-        "iconPath": "/static/tabbar/about.png",
-        "selectedIconPath": "/static/tabbar/about_ac.png",
-        "text": "发现"
-      },
-      {
         "pagePath": "pages/me/me",
         "iconPath": "/static/tabbar/me.png",
         "selectedIconPath": "/static/tabbar/me_ac.png",
@@ -49,15 +57,16 @@
       }
     ]
   },
-  "preloadRule": {
-    "pages/index/index": {
-      "network": "all",
-      "packages": [
-        "pageA"
-      ]
-    }
+  "networkTimeout": {
+    "request": 60000,
+    "uploadFile": 60000,
+    "downloadFile": 60000
   },
   "lazyCodeLoading": "requiredComponents",
-  "permission": {},
+  "permission": {
+    "scope.camera": {
+      "desc": "您的应用需要使用相机"
+    }
+  },
   "usingComponents": {}
 }

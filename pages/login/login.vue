@@ -3,14 +3,20 @@
 		<!-- 手机号快捷登录 -->
 		<view :style="{height:navHeight+'px',paddingTop:statusBarHeight+'px'}">
 		</view>
+		<image style="width:200rpx;height: 200rpx;margin-top:20%"
+			src="https://xhzl.sxhcyywl.com:1443/prod-api/profile/upload/2025/04/25/sc9_20250425130201A011.png"
+			mode="aspectFit">
+		</image>
 		<!-- 海川小海智链 -->
 		<text class="programname">海川小海智链</text>
 		<view class="numberlogin">
-			<button class="login-btn" open-type="getPhoneNumber" @getphonenumber="weChatLogin"
-				@click="checkAgreement">手机号快捷登录</button>
+			<!-- <text class="warnInfo">未注册的手机号将自动注册并登录</text> -->
+			<button v-if="!agreementChecked" class="login-btn" @click="handlePhone">微信授权登录</button>
+			<button v-else class="login-btn" @click="weChatLogin">微信授权登录</button>
 			<view class="agreement" :class="{'shake':shake}" @click="agreementChecked=!agreementChecked">
 				<checkbox :checked="agreementChecked" style="transform:scale(0.5)"></checkbox>
-				<text>我已阅读并同意《隐私政策》</text>
+				<text>我已阅读并同意<text class="privacyColor" @click.stop="gotoAgreement">《用户协议》</text>和<text
+						class="privacyColor" @click.stop="gotoPrivacy">《隐私政策》</text></text>
 			</view>
 		</view>
 	</view>
@@ -19,7 +25,21 @@
 	import {
 		log
 	} from 'util'
-	import {setUserInfo,getUserInfo,setToken,getToken,removeUserInfo,removeToken} from '@/utils/auth' 
+	import {
+		getConfig,
+		setUserInfo,
+		getUserInfo,
+		setToken,
+		getToken,
+		removeUserInfo,
+		removeToken,
+		setIsfirst,
+		getIsfirst,
+		removeIsfirst,
+		setloginuserInfo,
+		getloginuserInfo,
+		removeloginuserInfo
+	} from '@/utils/auth'
 	export default {
 		data() {
 			return {
@@ -27,6 +47,7 @@
 				shake: false, //控制抖动效果
 				statusBarHeight: null, //状态栏高度
 				navHeight: null, //导航栏高度
+				
 			}
 		},
 		onLoad() {
@@ -38,55 +59,93 @@
 			this.navHeight = this.statusBarHeight + menuButtonObject.height + (navTop - this.statusBarHeight) * 2;
 		},
 		methods: {
-			checkAgreement() {
+			// 进入用户协议
+			gotoAgreement() {
+				uni.navigateTo({
+					url: "/pages/login/agreement"
+				})
+			},
+			// 进入隐私协议内容
+			gotoPrivacy() {
+				wx.openPrivacyContract({
+					success: () => {
+						console.log("隐私协议打开成功");
+					},
+					fail: (error) => {
+						console.error('隐私协议打开失败', error);
+						uni.showToast({
+							title: "隐私协议打开失败",
+							icon: "error"
+						});
+					}
+				});
+			},
+			handlePhone() {
 				// 未勾选隐私协议时触发抖动
 				if (!this.agreementChecked) {
 					this.triggerShake();
 					uni.showToast({
-						title: "请先同意隐私政策",
+						title: "请阅读并勾选用户协议和隐私政策",
 						icon: 'none'
 					})
 					// return
 				}
 				return this.agreementChecked
 			},
-			weChatLogin(e) {
-				let that = this;
-				if (!this.checkAgreement()) return
-				if (e.detail.errMsg === "getPhoneNumber:ok") {
-					// let code = e.detail.code;
-					let phoneData = {};
-					phoneData.code = e.detail.code;
-					phoneData.encryptedData = e.detail.encryptedData;
-					phoneData.iv = e.detail.iv;
-					console.log("phoneData", phoneData)
-					// let phoneDatastring=JSON.stringify(phoneData);
-					// let header={
-					// 	"Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
-					// };
-					// console.log("phoneDatastring",phoneDatastring)
-					//1.不传递header,要省略中间参数，需用undefined占位；2.显式传递空对象，明确传递空对象{}，保持代码可读性；
-					that.request('login/phone', phoneData, 'POST', {}).then((wxPhone) => {
-						console.log("wxPhone", wxPhone);
-						setToken(wxPhone.data.token);
-						// let personInfo={
-						// 	...wxPhone.data,//展开原有字段
-						// 	avatar:"",//添加新的avatar字段
-						// }
-						// 设置用户手机号等信息
-						setUserInfo(wxPhone.data);
-						//uni.reLaunch()关闭所有页面，打开到应用内的某个页面。
-						uni.reLaunch({
-							url: '/pages/index/index'
-						})
-						// console.log("111");
-					})
-				} else {
-					uni.showToast({
-						title: "获取手机号失败",
-						icon: 'none'
-					})
-				}
+			weChatLogin() {
+				let that=this;
+				uni.showModal({
+					title:"提示",
+					content:"授权微信登录后才能正常使用小程序功能",
+					success(res){
+						if(res.confirm){
+							//需要在小程序进行登录获取code
+							uni.login({
+								provider: 'weixin',
+								success: (res) => {
+									var code = res.code;
+									console.log("code", code);
+									that.request('wxapi/wxLogin', {
+										code: code
+									}, 'POST', {}).then((wxPhone) => {
+										console.log("wxPhone", wxPhone);
+										setToken(wxPhone.token);
+										setIsfirst(wxPhone.isFirst);
+										if(!wxPhone.isFirst){
+											// uni.navigateTo({
+											// 	url: '/pages/addCompany/addCompany'
+											// })
+											uni.reLaunch({
+												url: '/pages/guide/guide'
+											})
+										}else{
+											console.log("login",wxPhone.userInfo);
+											setloginuserInfo(wxPhone.userInfo);
+											uni.switchTab({
+												url: '/pages/index/index'
+											})
+										}
+										
+									})
+								},
+								fail: ()=> {
+									uni.showToast({
+										title: '微信登录失败',
+										icon: 'none'
+									})
+								}
+							})
+						}else if(res.cancel){
+							uni.showToast({
+								title:'已拒绝授权',
+								icon:'none'
+							})
+						}
+					}
+				})
+				
+
+
 			},
 			triggerShake() {
 				this.shake = true;
@@ -97,7 +156,7 @@
 		}
 	}
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 	.loginModel {
 		width: 100%;
 		height: 100vh;
@@ -106,11 +165,18 @@
 		flex-direction: column;
 		// justify-content: center;
 		align-items: center;
+		// background: #020f75;
+		// background-image: linear-gradient(to top, #020f75 0%, #fff 100%);
+		background: linear-gradient(to bottom, transparent -400rpx, #fff 600rpx), linear-gradient(to right, #aaaaff, #FFD1DE);
 
 		.programname {
-			height: 600rpx;
-			line-height: 600rpx;
-			font-size: 60rpx;
+			height: 90rpx;
+			line-height: 90rpx;
+			font-size: 40rpx;
+			margin-bottom: 40%;
+			letter-spacing: 40rpx;
+			text-indent: 40rpx;
+			font-weight: 700;
 		}
 
 		.numberlogin {
@@ -119,6 +185,12 @@
 			flex-direction: column;
 			align-items: center;
 
+			.warnInfo {
+				color: #676666;
+				// color: #8d8d8c;
+				margin-bottom: 20rpx;
+			}
+
 			/* 登录按钮样式 */
 			.login-btn {
 				width: 80%;
@@ -126,6 +198,7 @@
 				background-color: #07c160;
 				color: white;
 				font-size: 32rpx;
+				border-radius: 50rpx;
 			}
 
 			/* 协议区域样式 */
@@ -135,6 +208,11 @@
 				align-items: center;
 				padding: 20rpx;
 				transition: all 0.3s;
+
+				.privacyColor {
+					color: #04bc5c;
+					font-size: 28rpx;
+				}
 			}
 
 			/* 抖动动画 */

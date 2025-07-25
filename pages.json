@@ -2,40 +2,48 @@
 	"easycom": {
 		"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue"
 	},
-	"pages": [
-		// {
-		// 	"path": "pages/login/login",
-		// 	"style": {
-		// 		"navigationBarTitleText": "登录",
-		// 		"enablePullDownRefresh": false,
-		// 		"navigationStyle": "custom"
-		// 	}
-
-		// },
+	"pages": [ 
 		{
 			"path": "pages/index/index",
 			"style": {
 				"navigationBarTitleText": "首页",
+				"enablePullDownRefresh": true,
+				"onReachBottomDistance": 50//触底距离
+				// "navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "登录",
+				"enablePullDownRefresh": false
+				// "navigationStyle": "custom" 
+			}
+		},
+		{
+			"path": "pages/guide/guide",
+			"style": {
+				"navigationBarTitleText": "引导页查看",
 				"enablePullDownRefresh": false
 			}
-		}, 
-		// {
-		// 	"path": "pages/about/about",
-		// 	"style": {
-		// 		"navigationBarTitleText": "关于",
-		// 		"enablePullDownRefresh": false,
-		// 		"navigationStyle": "custom"
-		// 	}
-
-		// }, 
-		// {
-		// 	"path": "pages/customer/customer",
-		// 	"style": {
-		// 		"navigationBarTitleText": "客服",
-		// 		"enablePullDownRefresh": false
-		// 	}
-		
-		// },
+		},
+		{
+			"path": "pages/addCompany/addCompany",
+			"style": {
+				"navigationBarTitleText": "填写补充信息",
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#1ef2fe"
+				// "navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/index/programs/programsDetail",
+			"style": {
+				"navigationBarTitleText": "行业动态详情",
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#80d9f7"
+			}
+		},
 		{
 			"path": "pages/find/find",
 			"style": {
@@ -52,53 +60,139 @@
 				"navigationStyle": "custom"
 			}
 
-		}, {
+		},
+		{
 			"path": "pages/me/mynotice/mynotice",
 			"style": {
 				"navigationBarTitleText": "我的通知公告",
 				"enablePullDownRefresh": false
 			}
-
-		}, {
-			"path": "pages/itemlist/itemlist",
+		},
+		{
+			"path": "pages/me/about/about",
 			"style": {
-				"navigationBarTitleText": "推荐开源项目",
+				"navigationBarTitleText": "关于我们",
 				"enablePullDownRefresh": false
 			}
-
-		}, {
-			"path": "pages/projectlist/projectlist",
+		},
+		{
+			"path": "pages/me/feedback/feedback",
 			"style": {
-				"navigationBarTitleText": "小程序推荐",
+				"navigationBarTitleText": "意见反馈",
 				"enablePullDownRefresh": false
 			}
-
-		}, {
-			"path": "pages/me/userinfo",
+		},
+		{
+			"path": "pages/me/evaluate/evaluate",
 			"style": {
-				"navigationBarTitleText": "用户信息",
+				"navigationBarTitleText": "客户评价",
 				"enablePullDownRefresh": false
 			}
-
+		},
+		{
+			"path": "pages/me/storeManage/storeManage",
+			"style": {
+				"navigationBarTitleText": "门店管理",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/me/storeManage/addStore/addStore",
+			"style": {
+				"navigationBarTitleText": "新增门店",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/login/agreement",
+			"style": {
+				"navigationBarTitleText": "用户协议",
+				"enablePullDownRefresh": false
+			}
 		}
+		
 	],
 	"subPackages": [
 		{
 			"root": "pageA",//第一个分包的根目录
 			"pages": [
 				{
-					"path": "route/route", //此文件为pageA/route/route.vue
+					"path": "codequery/codequery", //此文件为pageA/codequery/codequery.vue
 					"style": {
-						"navigationBarTitleText": "路由查询",
+						"navigationBarTitleText": "追溯码查询",
 						"enablePullDownRefresh": false
 					}
 				},
 				{
-					"path": "deliveryOrder/deliveryOrder", //此文件为pageA/route/route.vue
+					"path": "industryTrends/industryTrends", //此文件为pageA/codequery/codequery.vue
+					"style": {
+						"navigationBarTitleText": "行业动态",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "deliveryOrder/deliveryOrder", //此文件为pageA/deliveryOrder/deliveryOrder.vue
 					"style": {
 						"navigationBarTitleText": "配送订单列表",
+						"navigationBarBackgroundColor": "#fff",
+						// "navigationBarBackgroundColor": "#87cbff",
+						// "backgroundColorTop": "#c2fdf7",
+						// "backgroundColorBottom": "#f3f4f6",
+						"navigationBarTextStyle": "black",
 						"enablePullDownRefresh": true,//启用下拉刷新
 						"onReachBottomDistance": 50//触底距离
+					}
+				},
+				{
+					"path": "deliveryOrder/orderSearch/orderSearch",
+					"style": {
+						"navigationBarTitleText": "订单搜索",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "deliveryOrder/orderDetail/orderPreview",
+					"style": {
+						"navigationBarTitleText": "订单详情查询",
+						"enablePullDownRefresh": true,
+						"onReachBottomDistance": 50
+					}
+				},
+				{
+					"path": "deliveryOrder/orderDetail/orderUnbound",
+					"style": {
+						"navigationBarTitleText": "未出库订单详情",
+						"enablePullDownRefresh": true,
+						"onReachBottomDistance": 50
+					}
+				},
+				{
+					"path": "deliveryOrder/orderLogistics/orderLogistics",
+					"style": {
+						"navigationBarTitleText": "物流节点查询"
+						// "enablePullDownRefresh": true
+					}
+				},
+				{
+					"path": "deliveryOrder/supervisionCode/supervisionCode",
+					"style": {
+						"navigationBarTitleText": "电子监管码查询"
+						// "enablePullDownRefresh": true
+					}
+				},
+				// {
+				// 	"path": "deliveryOrder/orderElectron/orderElectron",
+				// 	"style": {
+				// 		"navigationBarTitleText": "电子随货下载",
+				// 		"enablePullDownRefresh": true
+				// 		// "onReachBottomDistance": 50
+				// 	}
+				// },
+				{
+					"path": "deliveryOrder/orderDetail/qualityDown",
+					"style": {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false
 					}
 				}
 			]
@@ -107,21 +201,22 @@
 		// 	"root": "pageB",//第二个分包的根目录
 		// 	"pages": [
 		// 		{
-		// 			"path": "",
+		// 			"path": "analStatement/analStatement",
 		// 			"style": {
-						
+		// 				"navigationBarTitleText": "报表统计",
+		// 				"enablePullDownRefresh": false
 		// 			}
 		// 		}
-		// 	],
+		// 	]
 		// }
 	],
 	// 预加载
-	"preloadRule":{
-		"pages/index/index":{ //在当前具体页面路径时，预加载某个包
-		"network": "all",
-		"packages": ["pageA"]
-		}
-	},
+	// "preloadRule":{
+	// 	"pages/index/index":{ //在当前具体页面路径时，预加载某个包
+	// 	"network": "all",
+	// 	"packages": ["pageA"]
+	// 	}
+	// },
 	"tabBar": {
 		"color": "#7A7E83",
 		"selectedColor": "#0a2576",
@@ -139,12 +234,12 @@
 			// 	"selectedIconPath": "/static/tabbar/about_ac.png",
 			// 	"text": "关于"
 			// }, 
-			{
-				"pagePath": "pages/find/find",
-				"iconPath": "/static/tabbar/about.png",
-				"selectedIconPath": "/static/tabbar/about_ac.png",
-				"text": "发现"
-			}, 
+			// {
+			// 	"pagePath": "pages/find/find",
+			// 	"iconPath": "/static/tabbar/about.png",
+			// 	"selectedIconPath": "/static/tabbar/about_ac.png",
+			// 	"text": "发现"
+			// }, 
 			// {
 			// 	"pagePath": "pages/customer/customer",
 			// 	"iconPath": "/static/tabbar/contact.png",

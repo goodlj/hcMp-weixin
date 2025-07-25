@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<ad :unit-id="adlist.bannerAd"></ad>
+		<!-- <ad :unit-id="adlist.bannerAd"></ad> -->
 		<view class="cu-card article shadow" v-for="(item,index) in noticelist" :key="index">
 			<view class="cu-item shadow">
 				<view class="title">{{item.noticeTitle}}</view>
@@ -22,7 +22,7 @@
 	export default {
 		data() {
 			return {
-				adlist:this.myad()[0],
+				// adlist:this.myad()[0],
 				noticelist:{}
 			}
 		},
@@ -31,8 +31,8 @@
 		},
 		methods: {
 			getNoticelist(){
-				let that = this
-				that.request('loadNotice','GET').then(res =>{
+				// let that = this
+				this.request('wxapi/loadNotice','GET').then(res =>{
 					console.log(res)
 					if(res){
 						this.noticelist = res.data

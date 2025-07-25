@@ -3,32 +3,60 @@
 		<view class="header">
 			<view class="bg">
 				<view class="box">
-					<view class="box-hd" @click="login">
-						<view>
-							<view class="avator">
-								<img :src="userinfo.avatar">
+					<view class="box-hd">
+						<view v-if="islogin">
+							<view v-if="!isfirst">
+								<view class="avator">
+									<!-- <button open-type="chooseAvatar" @chooseavatar="chooseaAatar" class="avatarBtn">
+										<u-avatar :src="src" size="80" shape="square"></u-avatar>
+							
+									</button> -->
+									<!-- <img src="https://xhzl.sxhcyywl.com:1443/prod-api/profile/upload/2025/04/25/sc2_20250425130040A004.png"
+										alt="" /> -->
+									<img :src="userinfo.avatar">
+									<!-- <image class="avatorimg" src="../../static/img/avatar.png" mode="aspectFit"></image> -->
+								</view>
+								<!-- <view class="phone-number">{{userinfo.phonenumber}},{{userinfo.nickName || '未设置昵称'}}</view> -->
+								<view class="phone-number">{{userinfo.phonenumber || '未设置'}}</view>
 							</view>
-							<view class="phone-number"> 手机号：{{userinfo.phone || '未获取到手机号'}}</view>
+							<view v-if="isfirst">
+								<view class="avator">
+									<!-- <button open-type="chooseAvatar" @chooseavatar="chooseaAatar" class="avatarBtn">
+										<u-avatar :src="src" size="80" shape="square"></u-avatar>
+							
+									</button> -->
+									<!-- <img src="https://xhzl.sxhcyywl.com:1443/prod-api/profile/upload/2025/04/25/sc2_20250425130040A004.png"
+										alt="" /> -->
+									<img :src="loginuserinfo.avatar">
+									<!-- <image class="avatorimg" src="../../static/img/avatar.png" mode="aspectFit"></image> -->
+								</view>
+								<!-- <view class="phone-number">{{loginuserinfo.phonenumber}},{{loginuserinfo.nickName || '未设置昵称'}}</view> -->
+								<view class="phone-number">{{loginuserinfo.phonenumber || '未设置'}}
+								</view>
+							</view>
 						</view>
-						<!-- <view v-else>
+						<view v-else @click="goLogin">
 							<view class="avator">
-								<img :src="avatarUrl">
+								<img :src="src">
 							</view>
-							<view class="phone-number" style="color: red;">点我登录</view>
-						</view> -->
+							<view class="phone-number" style="color:#3fbeff;">点我登录</view>
+						</view>
 					</view>
-					<view class="box-bd" @click="myNotice">
-						<view class="item">
+					<view class="box-bd">
+						<view class="item" @click="myNotice">
 							<u-icon class="icon" name="volume-fill" size="25" color="#757575"></u-icon>
 							<view class="text">我的通知</view>
 						</view>
-						<view class="item">
+						<!-- <view class="item">
 							<u-icon class="icon" name="star-fill" size="25" color="#757575"></u-icon>
 							<view class="text">我的收藏</view>
-						</view>
-						<view class="item">
-							<u-icon class="icon" name="server-fill" size="25" color="#757575"></u-icon>
-							<view class="text">我的客服</view>
+						</view> -->
+						<view class="item contactBtn">
+							<button open-type="contact" session-from="我的页面">
+								<u-icon class="icon" name="server-fill" size="25" color="#757575"></u-icon>
+								<view class="text">我的客服</view>
+							</button>
+
 						</view>
 					</view>
 				</view>
@@ -36,45 +64,50 @@
 		</view>
 		<view class="list-content">
 			<view class="list">
-				<view class="li">
+				<!-- <view class="li">
 					<u-icon class="icon" name="coupon-fill" size="25" color="#757575"></u-icon>
 					<view class="text">我的名片</view>
 					<u-icon class="icon" name="arrow-right" size="20" color="#757575"></u-icon>
-				</view>
-				<view class="li " @click="changeSkin">
+				</view> -->
+				<!-- <view class="li " @click="changeSkin">
 					<u-icon class="icon" name="grid-fill" size="25" color="#757575"></u-icon>
 					<view class="text">主题切换</view>
 					<u-icon class="icon" name="arrow-right" size="20" color="#757575"></u-icon>
-				</view>
-				<view class="li ">
+				</view> -->
+				<!-- <view class="li ">
 					<u-icon class="icon" name="question-circle-fill" size="25" color="#757575"></u-icon>
 					<view class="text">帮助中心</view>
 					<u-icon class="icon" name="arrow-right" size="20" color="#757575"></u-icon>
-				</view>
-				<view class="li ">
+				</view> -->
+				<view class="li" @click="handleAbout">
 					<u-icon class="icon" name="info-circle-fill" size="25" color="#757575"></u-icon>
 					<view class="text">关于我们</view>
 					<u-icon class="icon" name="arrow-right" size="20" color="#757575"></u-icon>
 				</view>
-				<view class="li ">
+				<view class="li" @click="feedback">
 					<u-icon class="icon" name="email-fill" size="25" color="#757575"></u-icon>
 					<view class="text">意见反馈</view>
 					<u-icon class="icon" name="arrow-right" size="20" color="#757575"></u-icon>
 				</view>
-				<view class="li noborder">
-					<u-icon class="icon" name="setting-fill" size="25" color="#757575"></u-icon>
-					<view class="text">系统设置</view>
-					<u-icon class="icon" name="arrow-right" size="20" color="#757575"></u-icon>
-				</view>
-				<!-- <view class="li noborder" @click="loginOut">
-					<u-icon class="icon" name="setting-fill" size="25" color="#757575"></u-icon>
-					<view class="text">注销登录</view>
+				<!-- <view class="li" @click="evaluate">
+					<u-icon class="icon" name="man-add-fill" size="25" color="#757575"></u-icon>
+					<view class="text">客户评价</view>
 					<u-icon class="icon" name="arrow-right" size="20" color="#757575"></u-icon>
 				</view> -->
+				<view class="li" @click="storeManage">
+					<u-icon class="icon" name="setting-fill" size="25" color="#757575"></u-icon>
+					<view class="text">门店管理</view>
+					<u-icon class="icon" name="arrow-right" size="20" color="#757575"></u-icon>
+				</view>
+				<view class="li noborder" @click="loginOut">
+					<u-icon class="icon" name="account-fill" size="25" color="#757575"></u-icon>
+					<view class="text">注销登录</view>
+					<u-icon class="icon" name="arrow-right" size="20" color="#757575"></u-icon>
+				</view>
 			</view>
 		</view>
 		<view class="copyright">
-			<text>小海智链版权所有</text>
+			<text>海川小海智链版权所有</text>
 		</view>
 	</view>
 </template>
@@ -86,7 +119,13 @@
 		setToken,
 		getToken,
 		removeUserInfo,
-		removeToken
+		removeToken,
+		setIsfirst,
+		getIsfirst,
+		removeIsfirst,
+		setloginuserInfo,
+		getloginuserInfo,
+		removeloginuserInfo
 	} from '@/utils/auth';
 	import {
 		log
@@ -94,57 +133,142 @@
 	export default {
 		data() {
 			return {
-				avatarUrl: 'https://portrait.gitee.com/uploads/avatars/user/354/1062657_rahman_1649233036.png!avatar60',
-				userinfo: {
-					
-				},
+				// avatarUrl: 'https://portrait.gitee.com/uploads/avatars/user/354/1062657_rahman_1649233036.png!avatar60',
+				islogin: undefined,
+				isfirst: undefined,
+				userinfo: {},
+				loginuserinfo: {},
+				src: "https://xhzl.sxhcyywl.com:1443/prod-api/profile/upload/2025/06/13/avatar_20250613095825A017.png",
 				// islogin:false,
 			}
 		},
 		onShow() {
-			console.log(getUserInfo())
-			// if(getUserInfo()!=undefined){
-			// 	this.islogin = true
-			// }
+			this.islogin = getToken();
+			this.isfirst = getIsfirst();
 			this.userinfo = getUserInfo() || {};
+			this.loginuserinfo = getloginuserInfo() || {};
 		},
 		methods: {
-			login() {
-				//成功后进入头像与昵称修改页面
+			goLogin() {
 				uni.navigateTo({
-					url: '/pages/me/userinfo'
+					url: '/pages/login/login'
+				})
+			},
+			chooseaAatar(e) {
+				console.log(e)
+				this.src = e.detail.avatarUrl
+				this.uploadFile(e.detail.avatarUrl); //选好了就开始上传
+			},
+			uploadFile(src) {
+				uni.showLoading({
+					title: '加载中...'
+				})
+				uni.uploadFile({
+					url: getConfig().uploadUrl, //图片上传路径
+					fileType: 'image', //图片类型,
+					name: 'file', //对应接口的文件名称
+					filePath: src,
+					header: { //请求头
+						"Content-Type": "multipart/form-data"
+					},
+					success: (res) => {
+						uni.hideLoading()
+						//成功的回调
+						//一般用于重新获取数据渲染页面
+						const r = JSON.parse(res.data);
+						console.log(r)
+						if (r.code == 0) {
+							this.savepth = r.url
+						}
+					},
+					fail: (err) => {
+						//失败的回调
+						console.log("err", err)
+					}
+
 				})
 			},
 			myNotice() {
 				uni.navigateTo({
 					url: './mynotice/mynotice'
 				})
+				// uni.showToast({
+				// 	title: '敬请期待...',
+				// 	icon: 'none'
+				// })
 			},
-			// loginOut() {
-			// 	uni.showModal({
-			// 		title: '注销登录提示',
-			// 		content: '确定要注销登录吗？',
-			// 		cancelText: "取消", // 取消按钮的文字
-			// 		confirmText: "确认", // 确认按钮的文字
-			// 		confirmColor: '#f55850',
-			// 		success: (res) => {
-			// 			if (res.confirm) {
-			// 				console.log('comfirm') //点击确定之后执行的代码
-			// 				uni.$u.toast("注销登录成功，欢迎再来")
-			// 				removeUserInfo()
-			// 				removeToken()
-			// 				this.islogin=false
-			// 			} else {
-			// 				console.log('cancel') //点击取消之后执行的代码
-			// 			}
-			// 		}
+			handleAbout() {
+				uni.navigateTo({
+					url: './about/about'
+				})
+			},
+			//意见反馈
+			feedback() {
+				//检查本地是否存在Token
+				const token = getToken();
+				if (!token) {
+					//未登录，返回登录页
+					uni.navigateTo({
+						url: '/pages/login/login'
+					})
+				} else {
+					uni.navigateTo({
+						url: './feedback/feedback'
+					})
+				}
+			},
+			//客户评价
+			// evaluate(){
+			// 	uni.navigateTo({
+			// 		url:'./evaluate/evaluate'
 			// 	})
-			// }
+			// },
+			//门店管理
+			storeManage() {
+				// 检查本地是否存在Token
+				const token = getToken();
+				if (!token) {
+					//未登录，返回登录页
+					uni.navigateTo({
+						url: '/pages/login/login'
+					})
+				} else {
+					uni.navigateTo({
+						url: './storeManage/storeManage'
+					})
+				}
+			},
+			loginOut() {
+				uni.showModal({
+					title: '注登录提示',
+					content: '确定要注销登录吗？',
+					cancelText: "取消", // 取消按钮的文字
+					confirmText: "确认", // 确认按钮的文字
+					confirmColor: '#f55850',
+					success: (res) => {
+						if (res.confirm) {
+							console.log('comfirm') //点击确定之后执行的代码
+							uni.$u.toast("注销登录成功，欢迎再来")
+							removeToken()
+							removeUserInfo()
+							removeloginuserInfo()
+							// uni.removeStorageSync("hasShownGuide")
+							uni.switchTab({
+								// url: '/pages/login/login'
+								url: '/pages/index/index'
+							});
+							// this.islogin=false
+						} else {
+							console.log('cancel') //点击取消之后执行的代码
+						}
+					}
+				})
+			}
 		}
 	}
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 	page {
 		background-color: #f1f1f1;
 		font-size: 28rpx;
@@ -188,6 +312,10 @@
 				margin-top: -80rpx;
 				overflow: hidden;
 
+				.avatarBtn {
+					padding: 0 !important;
+				}
+
 				img {
 					width: 100%;
 					height: 100%;
@@ -213,7 +341,7 @@
 				flex-wrap: wrap;
 				flex-direction: row;
 				justify-content: center;
-				border-right: 1px solid #f1f1f1;
+				border-right: 2rpx solid #f1f1f1;
 				margin: 15rpx 0;
 
 				&:last-child {
@@ -234,6 +362,23 @@
 					width: 100%;
 					text-align: center;
 					margin-top: 10rpx;
+					color: #000;
+				}
+			}
+
+			.contactBtn {
+				button {
+					background: #fff0;
+					font-size: 28rpx;
+
+					&::after {
+						border: none;
+					}
+
+					::v-deep .u-icon--right {
+						justify-content: center;
+					}
+
 				}
 			}
 		}
@@ -256,7 +401,7 @@
 			width: 92%;
 			height: 100rpx;
 			padding: 0px 4%;
-			border-bottom: 1px solid #f3f3f3;
+			border-bottom: 2rpx solid #f3f3f3;
 			display: flex;
 			align-items: center;
 			margin: 0rpx auto;

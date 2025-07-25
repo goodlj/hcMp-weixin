@@ -1,6 +1,30 @@
 <script>
+	import {
+		setUserInfo,
+		getUserInfo,
+		setToken,
+		getToken,
+		removeUserInfo,
+		removeToken,
+		setIsfirst,
+		getIsfirst,
+		removeIsfirst
+	} from '@/utils/auth';
 	export default {
 		onLaunch: async function(e) {
+			//检查本地是否存在Token
+			// const token = getToken();
+			// const isfirst = getIsfirst();
+			// if (token && isfirst) {
+			// 	//已登录，跳转到首页
+			// 	uni.switchTab({
+			// 		url: '/pages/index/index'
+			// 	})
+			// } else {
+			// 	uni.reLaunch({
+			// 		url: '/pages/login/login'
+			// 	})
+			// }
 			// 检测是否可以调用getUpdateManager检查更新
 			if (!uni.canIUse("getUpdateManager")) return;
 			const updateManager = uni.getUpdateManager();
@@ -37,12 +61,15 @@
 					})
 				}
 			});
+
 		},
 		onShow: function() {},
-		onHide: function() {console.log('App Hide')},
+		onHide: function() {
+			console.log('App Hide')
+		},
 		globalData: {
 			userinfo: null,
-			token:'',
+			token: '',
 		},
 	}
 </script>
